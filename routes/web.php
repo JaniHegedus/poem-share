@@ -12,11 +12,10 @@ Route::get('/dashboard', function () {
     return view('dashboard', compact('poems'));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/poems/{poem}', [PoemController::class, 'show'])->name('poems.show');
 Route::get('/search', [PoemController::class, 'search'])->name('search');
 
 Route::middleware('auth')->group(function () {
-    Route::resource('poems', PoemController::class)->except(['show']);
+    Route::resource('poems', PoemController::class);
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
