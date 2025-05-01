@@ -45,4 +45,9 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    public function poems()
+    {
+        return $this->hasMany(\App\Models\Poem::class);
+    }
+
 }

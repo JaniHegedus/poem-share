@@ -1,11 +1,41 @@
-@import 'tailwindcss';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
-@source '../../storage/framework/views/*.php';
-@source '../**/*.blade.php';
-@source '../**/*.js';
+.tagify {
+    --tag-bg: #1f2937; /* Tailwind dark: bg-gray-800 */
+    --tag-hover: #374151; /* dark:hover:bg-gray-700 */
+    --tag-text-color: #d1d5db; /* text-gray-300 */
+    --tag-remove-bg: transparent;
+    --tag-border-radius: 0.5rem;
+    --tag-padding: 0.35em 0.75em;
+    --tag-font-weight: 500;
+    --tag-inset-shadow-size: 0;
+}
 
-@theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+.tagify__tag {
+    background-color: var(--tag-bg);
+    color: var(--tag-text-color);
+    border-radius: var(--tag-border-radius);
+    padding: var(--tag-padding);
+    font-weight: var(--tag-font-weight);
+    border: 1px solid #4b5563; /* dark:border-gray-600 */
+    transition: background 0.2s;
+}
+
+.tagify__tag:hover {
+    background-color: var(--tag-hover);
+}
+
+.tagify__tag__removeBtn {
+    color: #9ca3af; /* text-gray-400 */
+    margin-left: 0.4em;
+}
+
+.tagify__tag__removeBtn:hover {
+    color: #f87171; /* text-red-400 */
+}
+
+.tagify__input {
+    color: #f3f4f6 !important; /* text-gray-100 */
 }
