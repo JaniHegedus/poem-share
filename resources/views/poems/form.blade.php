@@ -27,7 +27,7 @@
 
             <div class="mb-4">
                 <label for="body" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Content</label>
-                <textarea id="myeditorinstance" name="body" rows="6" required
+                <textarea id="myeditorinstance" name="body" rows="6"
                           class="mt-1 block w-full rounded-md dark:bg-gray-800 dark:border-gray-600 dark:text-white border-gray-300 shadow-sm">{{ old('body', $poem->body) }}</textarea>
             </div>
 
@@ -64,6 +64,11 @@
                 classname: 'tags-look',
                 maxItems: 10,
                 closeOnSelect: false
+            }
+        });
+        document.querySelector('form').addEventListener('submit', function () {
+            if (typeof tinymce !== 'undefined') {
+                tinymce.triggerSave();
             }
         });
     </script>
