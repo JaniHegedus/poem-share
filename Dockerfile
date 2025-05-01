@@ -1,24 +1,30 @@
+# Dockerfile
 FROM php:8.2-fpm
 
-WORKDIR /var/www
-
+# Install system dependencies: git, unzip, curl, sqlite libs, supervisor, cron
 RUN apt-get update && apt-get install -y \
-    build-essential \
-    libpng-dev \
-    libjpeg-dev \
-    libonig-dev \
-    libxml2-dev \
-    zip unzip curl git nodejs npm sqlite3 libsqlite3-dev \
-    && docker-php-ext-install pdo pdo_sqlite mbstring exif pcntl bcmath gd
+    git \
+    unzip \
+    curl \
+    libsqlite3-dev \
+    supervisor \
+    cron \
+    && docker-php-ext-install pdo pdo_sqlite
 
-COPY --from=composer:2.6 /usr/bin/composer /usr/bin/composer
+# Set working directory
+WORKDIR /var/www/html
 
-COPY . .
+# Copy in our Supervisor config and cron file
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+COPY crontab /etc/cron.d/laravel
 
-RUN composer install && npm install && npm run build
+# Make the cron file readable and register it
+RUN chmod 0644 /etc/cron.d/laravel \
+    && crontab /etc/cron.d/laravel \
+    && touch /var/log/cron.log
 
-RUN chown -R www-data:www-data /var/www && chmod -R 755 /var/www
+# Expose port if you want to use `artisan serve`
+EXPOSE 8000
 
-EXPOSE 9000
-
-CMD ["php-fpm"]
+# The main CMD: run Supervisor in the foreground
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
